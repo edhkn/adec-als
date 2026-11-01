@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALS ADEC ELECTRICAL THERAPY STATION : SKILL ASSESSMENT</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f4f7f6; padding: 20px 10px; }
+    
+    /* Navigasi Utama Terapung */
+    nav {
+      background: #ffffff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 12px 20px;
+      border-radius: 12px;
+      max-width: 850px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #2c3e50;
+    }
+    .logo-group:hover {
+      color: #2c3e50;
+      text-decoration: none;
+    }
+    .dept-logo {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+    }
+    .logo-text {
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.25;
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-text span {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #7f8c8d;
+    }
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Container & Elements */
+    .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
+    h2 { color: #2c3e50; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    .question-block { background: #f9fbfd; border-left: 4px solid #3498db; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
+    .question-title { font-weight: 500; margin-bottom: 4px; color: #2c3e50; }
+    .total-block { background: #eef2f5; border: 2px dashed #7f8c8d; }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      padding: 20px 0 10px;
+      text-align: center;
+      color: #64748b;
+    }
+    .footer-container {
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    .footer-logos img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+    .logo-divider {
+      width: 1px;
+      height: 28px;
+      background-color: #cbd5e1;
+    }
+    .footer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+    .footer-copyright {
+      font-size: 0.85rem;
+      color: #94a3b8;
+      margin: 0;
+    }
+    .footer-copyright span {
+      color: #334155;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigasi Utama Terapung -->
+  <nav>
+    <a href="#" class="logo-group">
+      <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
+      <div class="logo-text">
+        Hospital Kuala Nerang
+        <span>Jabatan Kecemasan & Trauma</span>
+      </div>
+    </a>
+    <a href="index.html" class="btn btn-outline-primary btn-home">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.293V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.293l5-5z"/>
+      </svg>
+      Home
+    </a>
+  </nav>
+
+  <div class="form-container">
+    <h2 class="text-center">ALS - ELECTRICAL THERAPY STATION EXAM</h2>
+    
+    <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
+      
+      <div class="mb-4">
+        <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
+        <select class="form-select" id="studentName" required>
+          <option value="" disabled selected>Select candidate name...</option>
+          <option value="ABDUL LATIFF BIN SHARI">ABDUL LATIFF BIN SHARI</option>
+          <option value="AHMAD AZIM AFIFI BIN SHARUPUDDIN">AHMAD AZIM AFIFI BIN SHARUPUDDIN</option>
+          <option value="AKMAL RIDHWAN BIN YUSRIZAL">AKMAL RIDHWAN BIN YUSRIZAL</option>
+          <option value="ARIF AKMAL BIN ABDUL WAHAB">ARIF AKMAL BIN ABDUL WAHAB</option>
+          <option value="BUVANESWARY A/P PUSHPARAJAH">BUVANESWARY A/P PUSHPARAJAH</option>
+          <option value="CHIN HUI ZHI">CHIN HUI ZHI</option>
+          <option value="HARISAH BINTI OMAR">HARISAH BINTI OMAR</option>
+          <option value="MOHAMAD FADZIL BIN ROMLI">MOHAMAD FADZIL BIN ROMLI</option>
+          <option value="MOHAMAD NIZAM BIN MOHAMAD BAKRI">MOHAMAD NIZAM BIN MOHAMAD BAKRI</option>
+          <option value="MOHD FIRDAUS BIN MUSA">MOHD FIRDAUS BIN MUSA</option>
+          <option value="MOHD RAIMI SHAFRY BIN ROSAIDI">MOHD RAIMI SHAFRY BIN ROSAIDI</option>
+          <option value="MOHD SYAFIQ BIN ISMAIL">MOHD SYAFIQ BIN ISMAIL</option>
+          <option value="PERREVITHA A/P KRISHNAN">PERREVITHA A/P KRISHNAN</option>
+          <option value="ROSLINA BINTI MOHAMED OMAR">ROSLINA BINTI MOHAMED OMAR</option>
+          <option value="SITI NOORDIYANA BINTI MOHD ROSDI">SITI NOORDIYANA BINTI MOHD ROSDI</option>
+          <option value="SITI NURJANNAH BINTI HANIZAN">SITI NURJANNAH BINTI HANIZAN</option>
+          <option value="THIBACINI A/P MOHAN">THIBACINI A/P MOHAN</option>
+          <option value="ZAINAB BINTI HASAN">ZAINAB BINTI HASAN</option>
+          <option value="ZAYANI ADLINA BINTI ZALIZAN">ZAYANI ADLINA BINTI ZALIZAN</option>
+        </select>
+      </div>
+
+      <script>
+        function calculateTotal() {
+          let total = 0;
+          document.querySelectorAll('.item-radio:checked').forEach(radio => {
+            total += parseFloat(radio.getAttribute('data-score')) || 0;
+          });
+          total = Math.round(total * 10) / 10;
+          document.getElementById('grandTotalDisplay').innerText = total;
+        }
+
+        const rubric = [
+          {
+            section: "I: SYNCHRONIZED CARDIOVERSION (Subtotal: 10)",
+            items: [
+              { 
+                text: "<strong>Sedates all conscious patients</strong>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Turns on monitor and attaches leads</strong><br><small class='text-muted'>Ensure proper placement of leads. Position pads properly on the patient.</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Engages synchronization mode</strong><br><small class='text-muted'>Presses the sync button. Looks for markers on R wave indicating sync mode.</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Selects the appropriate energy level:</strong><br><small class='text-muted'>• Unstable AF: 120J<br>• Unstable monomorphic VT: 100J<br>• Unstable SVT/ atrial flutter: 50-100J<br>• Polymorphic VT and unstable: Treat as VF with high-energy shock</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Announces clearly to team members:</strong><br><small class='text-muted'>“Charging defibrillator - stand clear”</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Presses the charge button</strong>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Clears the patient when the defibrillator is charged</strong>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Presses the shock button</strong>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Checks the monitor</strong><br><small class='text-muted'>If tachycardia persists, increases the energy level (joules).</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Reactivates the sync button</strong><br><small class='text-muted'>Ensures sync button is reactivated after delivery of each synchronized shock.</small>", 
+                max: 1 
+              }
+            ]
+          },
+          {
+            section: "II: TRANSCUTANEOUS PACING (Subtotal: 10)",
+            items: [
+              { 
+                text: "<strong>Sedates all conscious patients</strong><br><small class='text-muted'>Unless patient is rapidly deteriorating</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Places pacing electrodes and engages pacer mode</strong><br><small class='text-muted'>Places electrodes on the chest; turns pacer mode on.</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Sets the demand rate</strong><br><small class='text-muted'>Sets demand rate to 60/min (acceptable range 60-80/min).</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Increases current output for electrical capture</strong><br><small class='text-muted'>Increases current output by 10 mA increments until electrical capture is obtained.</small>", 
+                max: 2 
+              },
+              { 
+                text: "<strong>Confirms mechanical capture</strong><br><small class='text-muted'>Palpates femoral pulse to confirm mechanical capture once electrical capture is observed.</small>", 
+                max: 2 
+              },
+              { 
+                text: "<strong>Assesses hemodynamic / clinical status</strong><br><small class='text-muted'>Evaluates patient status once both electrical and mechanical capture are confirmed.</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Sets safety margin</strong><br><small class='text-muted'>Sets the current output 2 mA above the threshold at which consistent capture is observed.</small>", 
+                max: 1 
+              },
+              { 
+                text: "<strong>Post-pacing management</strong><br><small class='text-muted'>Performs a 12-lead ECG and initiates consultation with the cardiology team.</small>", 
+                max: 1 
+              }
+            ]
+          }
+        ];
+
+        let html = '';
+        let qIndex = 1;
+        rubric.forEach(sec => {
+          html += `<h5 class="mt-4 mb-3 text-primary border-bottom pb-2 fw-bold">${sec.section}</h5>`;
+          sec.items.forEach(q => {
+            html += `
+              <div class="question-block">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <div class="question-title">${qIndex}. ${q.text}</div>
+                  <span class="badge bg-secondary ms-2">${q.max} pt${q.max > 1 ? 's' : ''}</span>
+                </div>
+                <div class="mt-2 pt-1 border-top">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input item-radio" type="radio" name="item${qIndex}" id="item${qIndex}_done" value="DONE" data-score="${q.max}" required onchange="calculateTotal()">
+                    <label class="form-check-label text-success fw-bold" for="item${qIndex}_done">DONE (${q.max})</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input item-radio" type="radio" name="item${qIndex}" id="item${qIndex}_notdone" value="NOT DONE" data-score="0" onchange="calculateTotal()">
+                    <label class="form-check-label text-danger fw-bold" for="item${qIndex}_notdone">NOT DONE (0)</label>
+                  </div>
+                </div>
+              </div>
+            `;
+            qIndex++;
+          });
+        });
+        document.write(html);
+      </script>
+
+      <div class="my-4 p-3 total-block rounded text-center">
+        <h3 class="mb-0 text-dark fw-bold">GRAND TOTAL: <span id="grandTotalDisplay" class="text-primary">0</span> / 20</h3>
+      </div>
+
+      <hr class="my-4">
+      
+      <div class="mb-4 question-block" style="border-left-color: #e74c3c;">
+        <label class="question-title fs-5 mb-2">OVERALL PERFORMANCE *</label><br>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="result" id="res_pass" value="PASS" required>
+          <label class="form-check-label text-success fw-bold" for="res_pass">PASS</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="result" id="res_fail" value="NEEDS REMEDIAL">
+          <label class="form-check-label text-danger fw-bold" for="res_fail">NEEDS REMEDIAL</label>
+        </div>
+      </div>
+
+      <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="instructorPotential" value="YES">
+        <label class="form-check-label fw-bold text-primary" for="instructorPotential">INSTRUCTOR POTENTIAL</label>
+      </div>
+
+      <div class="mb-4">
+        <label class="form-label fw-bold">EXAMINER'S NAME / SIGNATURE :</label>
+        <input type="text" class="form-control" id="instructorName" placeholder="Enter Examiner Name" required>
+      </div>
+
+      <div class="d-grid gap-2">
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-lg fw-bold">Submit Assessment</button>
+      </div>
+
+      <div id="statusAlert" class="alert mt-3" style="display:none;"></div>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logos">
+        <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="HKN Logo">
+        <div class="logo-divider"></div>
+        <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
+      </div>
+
+      <div class="footer-status">
+        <span class="pulse-dot"></span>
+        <span>EDHKN PORTAL Ver 2.0</span>
+      </div>
+
+      <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
+
+    function submitAssessment() {
+      const submitBtn = document.getElementById('submitBtn');
+      const alertBox = document.getElementById('statusAlert');
+      
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Submitting Data...";
+      alertBox.style.display = "none";
+
+      const payload = {
+        formType: "ALS Electrical Therapy",
+        studentName: document.getElementById('studentName').value,
+        result: document.querySelector('input[name="result"]:checked').value,
+        instructorPotential: document.getElementById('instructorPotential').checked ? "YES" : "",
+        instructorName: document.getElementById('instructorName').value,
+        totalScore: document.getElementById('grandTotalDisplay').innerText
+      };
+
+      const itemsCount = 18;
+      for (let i = 1; i <= itemsCount; i++) {
+        const selected = document.querySelector(`input[name="item${i}"]:checked`);
+        payload[`item${i}`] = selected ? selected.value : "";
+      }
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('assessmentForm').reset();
+        document.getElementById('grandTotalDisplay').innerText = "0";
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Assessment";
+        alertBox.className = "alert alert-success mt-3";
+        alertBox.innerText = "ALS Electrical Therapy Assessment saved successfully to Google Sheet!";
+        alertBox.style.display = "block";
+        setTimeout(() => { alertBox.style.display = "none"; }, 5000);
+      })
+      .catch(error => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Submit Assessment";
+        alertBox.className = "alert alert-danger mt-3";
+        alertBox.innerText = "Submission failed: " + error.message;
+        alertBox.style.display = "block";
+      });
+    }
+  </script>
+
+</body>
+</html>
