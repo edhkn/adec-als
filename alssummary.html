@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALS ADEC - Assessment Summary | Hospital Kuala Nerang</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-navy: #1e293b;
+      --accent-blue: #3498db;     /* Airway */
+      --accent-circ: #e67e22;     /* Circulation */
+      --accent-elec: #8e44ad;     /* Electrical */
+      --accent-mega: #c0392b;     /* Megacode */
+      --accent-mcq: #0f766e;      /* MCQ */
+      --accent-grand: #0284c7;    /* Grand Total */
+      --accent-pct: #15803d;      /* Percentage */
+    }
+
+    body {
+      background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: var(--primary-navy);
+    }
+
+    /* Floating Navigation */
+    nav {
+      position: sticky;
+      top: 15px;
+      z-index: 1000;
+      max-width: 1350px;
+      margin: 0 auto;
+      width: calc(100% - 30px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 10px 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: #2c3e50;
+    }
+
+    .dept-logo {
+      height: 46px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-text {
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.2;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-text span {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: #64748b;
+    }
+
+    .back-portal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #2c3e50;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 7px 16px;
+      border-radius: 25px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .back-portal-btn:hover {
+      background: #2c3e50;
+      color: #ffffff;
+    }
+
+    /* Main Container */
+    .dashboard-wrapper {
+      max-width: 1400px;
+      width: 100%;
+      margin: 30px auto 60px;
+      padding: 0 16px;
+    }
+
+    /* Metric Cards */
+    .metric-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    /* Table Container */
+    .table-container {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+      margin-top: 24px;
+    }
+
+    .table th {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      font-weight: 700;
+      background-color: #f8fafc;
+      vertical-align: middle;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 10px 6px;
+    }
+
+    .table td {
+      vertical-align: middle;
+      font-size: 0.82rem;
+      padding: 10px 6px;
+    }
+
+    .badge-status {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 7px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    .badge-pass { background: #dcfce7; color: #15803d; }
+    .badge-fail { background: #fee2e2; color: #b91c1c; }
+    .badge-remedial { background: #fef08a; color: #854d0e; }
+    .badge-pending { background: #f1f5f9; color: #64748b; }
+    .badge-pot { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+
+    /* Highlights */
+    .total-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent-grand);
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    .pct-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--accent-pct);
+      background: #dcfce7;
+      border: 1px solid #bbf7d0;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: inline-block;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 35px 20px;
+    }
+
+    .footer-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+    .footer-logos { display: flex; align-items: center; gap: 16px; }
+    .footer-logos img { height: 42px; width: auto; object-fit: contain; }
+    .logo-divider { width: 1px; height: 30px; background-color: #dcdde1; }
+    .footer-status { display: inline-flex; align-items: center; gap: 8px; background: #f8f9fa; border: 1px solid #edf2f7; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #2d3436; }
+    .pulse-dot { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
+    .footer-copyright { font-size: 0.85rem; color: #95a5a6; margin: 0; }
+    .footer-copyright span { font-weight: 600; color: #2c3e50; }
+
+    @media print {
+      nav, footer, .controls-row, .btn-print { display: none !important; }
+      body { background: #ffffff; }
+      .table-container { box-shadow: none; border: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigasi Utama Terapung -->
+  <nav>
+    <a href="index.html" class="logo-group">
+      <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
+      <div class="logo-text">
+        Hospital Kuala Nerang
+        <span>Jabatan Kecemasan & Trauma</span>
+      </div>
+    </a>
+    <a href="index.html" class="back-portal-btn">
+      <i class="bi bi-arrow-left"></i> Hub Portal
+    </a>
+  </nav>
+
+  <!-- Dashboard Content -->
+  <main class="dashboard-wrapper">
+    
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="h3 fw-bold mb-1">ALS ADEC : Consolidated Summary</h1>
+        <p class="text-muted small mb-0">Full candidate performance summary combining 3 Skill Stations, Megacode, and MCQ Examination (Max 125 Points).</p>
+      </div>
+      <div class="d-flex gap-2 mt-3 mt-md-0">
+        <button onclick="fetchSummary()" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+          <i class="bi bi-arrow-clockwise me-1"></i> Refresh Data
+        </button>
+        <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-3 btn-print" style="background: #2c3e50; border-color: #2c3e50;">
+          <i class="bi bi-printer me-1"></i> Print / PDF
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Metrics Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="metric-card">
+          <div class="metric-icon" style="background: #ebf5fb; color: #3498db;">
+            <i class="bi bi-people-fill"></i>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold">Total Candidates</div>
+            <div class="h4 fw-bold mb-0">19</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="metric-card">
+          <div class="metric-icon" style="background: #e8f8f5; color: #0f766e;">
+            <i class="bi bi-journal-check"></i>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold">MCQ Assessed</div>
+            <div class="h4 fw-bold mb-0" id="metricMcqCount">0 / 19</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="metric-card">
+          <div class="metric-icon" style="background: #fee2e2; color: #c0392b;">
+            <i class="bi bi-heart-pulse-fill"></i>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold">Megacode Assessed</div>
+            <div class="h4 fw-bold mb-0" id="metricMegaCount">0 / 19</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="metric-card">
+          <div class="metric-icon" style="background: #fef3c7; color: #b45309;">
+            <i class="bi bi-star-fill"></i>
+          </div>
+          <div>
+            <div class="text-muted small fw-semibold">Potentials / Best</div>
+            <div class="h4 fw-bold mb-0" id="metricPotentialCount">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Table Container -->
+    <div class="table-container">
+      <div class="row g-2 mb-3 controls-row">
+        <div class="col-md-6">
+          <div class="input-group input-group-sm">
+            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+            <input type="text" id="searchInput" class="form-control border-start-0 bg-light" placeholder="Search candidate name..." onkeyup="filterTable()">
+          </div>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0" id="summaryTable">
+          <thead>
+            <tr>
+              <th style="width: 30px;">#</th>
+              <th>Candidate Name</th>
+              <th class="text-center" style="color: var(--accent-blue);">Airway<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/20</span></th>
+              <th class="text-center" style="color: var(--accent-circ);">Circulation<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/20</span></th>
+              <th class="text-center" style="color: var(--accent-elec);">Elec. Therapy<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/20</span></th>
+              <th class="text-center" style="color: var(--accent-mega);">Megacode<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/25</span></th>
+              <th class="text-center" style="color: var(--accent-mcq);">MCQ<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/40</span></th>
+              <th class="text-center bg-light" style="color: var(--accent-grand); border-left: 2px solid #e2e8f0;">Total Points<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">/125</span></th>
+              <th class="text-center bg-light" style="color: var(--accent-pct);">Overall %<br><span class="fw-normal text-muted" style="font-size: 0.65rem;">(100%)</span></th>
+              <th class="text-center">Potentials</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr>
+              <td colspan="10" class="text-center py-4 text-muted">
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span> Loading assessment data from Google Sheets...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-logos">
+        <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="HKN Logo">
+        <div class="logo-divider"></div>
+        <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
+      </div>
+      <div class="footer-status"><span class="pulse-dot"></span><span>EDHKN PORTAL Ver 2.0</span></div>
+      <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
+
+    const GRAND_MAX_POINTS = 125; // Airway(20) + Circ(20) + Elec(20) + Mega(25) + MCQ(40)
+
+    const studentList = [
+      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
+      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
+      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
+      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
+      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
+      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
+    ];
+
+    document.addEventListener("DOMContentLoaded", fetchSummary);
+
+    function fetchSummary() {
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2" role="status"></span> Fetching latest scores...</td></tr>`;
+
+      fetch(`${API_URL}?action=getSummary`)
+        .then(res => res.json())
+        .then(data => renderSummary(data))
+        .catch(err => {
+          tbody.innerHTML = `<tr><td colspan="10" class="text-center py-4 text-danger"><i class="bi bi-exclamation-circle me-1"></i> Failed to retrieve data from Google Sheets.</td></tr>`;
+        });
+    }
+
+    // Safely convert raw score to number
+    function parseNumericScore(val) {
+      if (val === undefined || val === null || val === "-") return 0;
+      if (typeof val === 'number') return val;
+      
+      let str = val.toString().trim();
+      if (str.includes('/')) {
+        let parts = str.split('/');
+        let p = parseFloat(parts[0].trim());
+        return isNaN(p) ? 0 : p;
+      }
+      let num = parseFloat(str);
+      return isNaN(num) ? 0 : num;
+    }
+
+    function renderSummary(data) {
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = "";
+
+      let mcqCompleted = 0;
+      let megaCompleted = 0;
+      let potentialCount = 0;
+
+      studentList.forEach((name, idx) => {
+        const row = data[name] || {};
+        const airway = row.airway || { score: "-", result: "-" };
+        const circ = row.circulation || { score: "-", result: "-" };
+        const elec = row.electrical || { score: "-", result: "-" };
+        const mega = row.megacode || { score: "-", result: "-" };
+        const mcq = row.mcq || { score: "-", result: "-" };
+
+        if (mcq.score !== "-") mcqCompleted++;
+        if (mega.score !== "-") megaCompleted++;
+
+        // Calculate Grand Total Points
+        const sAirway = parseNumericScore(airway.score);
+        const sCirc = parseNumericScore(circ.score);
+        const sElec = parseNumericScore(elec.score);
+        const sMega = parseNumericScore(mega.score);
+        const sMcq = parseNumericScore(mcq.score);
+
+        const totalPoints = sAirway + sCirc + sElec + sMega + sMcq;
+        const percentage = ((totalPoints / GRAND_MAX_POINTS) * 100).toFixed(1);
+
+        // Check if marked potential in any skill station or megacode
+        const isPotential = [airway.potential, circ.potential, elec.potential, mega.potential].includes("YES");
+        if (isPotential) potentialCount++;
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="text-muted small">${idx + 1}</td>
+          <td class="fw-bold" style="font-size: 0.8rem;">${name}</td>
+          <td class="text-center">${formatStationBadge(airway.score, airway.result, 20)}</td>
+          <td class="text-center">${formatStationBadge(circ.score, circ.result, 20)}</td>
+          <td class="text-center">${formatStationBadge(elec.score, elec.result, 20)}</td>
+          <td class="text-center">${formatStationBadge(mega.score, mega.result, 25)}</td>
+          <td class="text-center">${formatMcqBadge(mcq.score, mcq.result, 40)}</td>
+          <td class="text-center bg-light" style="border-left: 2px solid #e2e8f0;"><span class="total-badge">${totalPoints} / ${GRAND_MAX_POINTS}</span></td>
+          <td class="text-center bg-light"><span class="pct-badge">${percentage}%</span></td>
+          <td class="text-center">${isPotential ? '<span class="badge-status badge-pot"><i class="bi bi-star-fill me-1"></i>Yes</span>' : '<span class="text-muted small">-</span>'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById("metricMcqCount").innerText = `${mcqCompleted} / 19`;
+      document.getElementById("metricMegaCount").innerText = `${megaCompleted} / 19`;
+      document.getElementById("metricPotentialCount").innerText = potentialCount;
+    }
+
+    function formatStationBadge(score, result, max) {
+      if (score === "-" || !result || result === "-") return `<span class="badge-status badge-pending">Pending</span>`;
+      
+      const resUpper = result.toUpperCase();
+      let badgeClass = "badge-fail";
+      if (resUpper === "PASS") badgeClass = "badge-pass";
+      else if (resUpper === "REMEDIAL" || resUpper.includes("NEED")) badgeClass = "badge-remedial";
+
+      return `<span class="badge-status ${badgeClass}">${score}/${max} (${resUpper.substring(0,4)})</span>`;
+    }
+
+    function formatMcqBadge(score, result, max) {
+      if (score === "-" || !result || result === "-") return `<span class="badge-status badge-pending">Pending</span>`;
+      
+      const resUpper = result.toUpperCase();
+      let badgeClass = resUpper === "PASS" ? "badge-pass" : "badge-fail";
+      
+      return `<span class="badge-status ${badgeClass}">${score}/${max} (${resUpper})</span>`;
+    }
+
+    function filterTable() {
+      const q = document.getElementById("searchInput").value.toUpperCase();
+      const rows = document.getElementById("tableBody").getElementsByTagName("tr");
+      for (let i = 0; i < rows.length; i++) {
+        const nameCol = rows[i].getElementsByTagName("td")[1];
+        if (nameCol) {
+          const text = nameCol.textContent || nameCol.innerText;
+          rows[i].style.display = text.toUpperCase().indexOf(q) > -1 ? "" : "none";
+        }
+      }
+    }
+  </script>
+</body>
+</html>
