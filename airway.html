@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ALS ADEC AIRWAY STATION : SKILL ASSESSMENT</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body { background-color: #f4f7f6; padding: 20px; }
+    .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
+    h2 { color: #2c3e50; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+    .question-block { background: #f9fbfd; border-left: 4px solid #3498db; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
+    .question-title { font-weight: 500; margin-bottom: 4px; color: #2c3e50; }
+    .total-block { background: #eef2f5; border: 2px dashed #7f8c8d; }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2 class="text-center">ALS - AIRWAY STATION EXAM</h2>
+  
+  <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
+    
+    <div class="mb-4">
+      <label class="form-label fw-bold">NAME OF RESPONDER :</label>
+      <select class="form-select" id="studentName" required>
+        <option value="" disabled selected>Select student name...</option>
+        <option value="ABDUL LATIFF BIN SHARI">ABDUL LATIFF BIN SHARI</option>
+        <option value="AHMAD AZIM AFIFI BIN SHARUPUDDIN">AHMAD AZIM AFIFI BIN SHARUPUDDIN</option>
+        <option value="AKMAL RIDHWAN BIN YUSRIZAL">AKMAL RIDHWAN BIN YUSRIZAL</option>
+        <option value="ARIF AKMAL BIN ABDUL WAHAB">ARIF AKMAL BIN ABDUL WAHAB</option>
+        <option value="BUVANESWARY A/P PUSHPARAJAH">BUVANESWARY A/P PUSHPARAJAH</option>
+        <option value="CHIN HUI ZHI">CHIN HUI ZHI</option>
+        <option value="HARISAH BINTI OMAR">HARISAH BINTI OMAR</option>
+        <option value="MOHAMAD FADZIL BIN ROMLI">MOHAMAD FADZIL BIN ROMLI</option>
+        <option value="MOHAMAD NIZAM BIN MOHAMAD BAKRI">MOHAMAD NIZAM BIN MOHAMAD BAKRI</option>
+        <option value="MOHD FIRDAUS BIN MUSA">MOHD FIRDAUS BIN MUSA</option>
+        <option value="MOHD RAIMI SHAFRY BIN ROSAIDI">MOHD RAIMI SHAFRY BIN ROSAIDI</option>
+        <option value="MOHD SYAFIQ BIN ISMAIL">MOHD SYAFIQ BIN ISMAIL</option>
+        <option value="PERREVITHA A/P KRISHNAN">PERREVITHA A/P KRISHNAN</option>
+        <option value="ROSLINA BINTI MOHAMED OMAR">ROSLINA BINTI MOHAMED OMAR</option>
+        <option value="SITI NOORDIYANA BINTI MOHD ROSDI">SITI NOORDIYANA BINTI MOHD ROSDI</option>
+        <option value="SITI NURJANNAH BINTI HANIZAN">SITI NURJANNAH BINTI HANIZAN</option>
+        <option value="THIBACINI A/P MOHAN">THIBACINI A/P MOHAN</option>
+        <option value="ZAINAB BINTI HASAN">ZAINAB BINTI HASAN</option>
+        <option value="ZAYANI ADLINA BINTI ZALIZAN">ZAYANI ADLINA BINTI ZALIZAN</option>
+      </select>
+    </div>
+
+    <script>
+      function calculateTotal() {
+        let total = 0;
+        document.querySelectorAll('.score-val').forEach(input => {
+          let val = parseFloat(input.value);
+          if(!isNaN(val)) total += val;
+        });
+        document.getElementById('grandTotalDisplay').innerText = total;
+      }
+
+      const rubric = [
+        {
+          section: "I: OROPHARYNGEAL AIRWAY (OPA) INSERTION (Max: 3)",
+          items: [
+            { text: "<strong>Verbalizes the indication and contraindications of OPA</strong><br><small class='text-muted'>Indication: Temporary ventilation technique to achieve an open airway<br>Contraindication: Patients with gag reflexes</small>", max: 1 },
+            { text: "<strong>Selects a proper-size airway</strong><br><small class='text-muted'>A correctly sized airway extends from the corner of the mouth to the ear lobe</small>", max: 0.5 },
+            { text: "<strong>Open the patient's mouth</strong><br><small class='text-muted'>Inserts the OPA upside down so its tip is facing the roof of the patient's mouth. Rotates the OPA 180 degrees as the OPA is inserted until the flange is resting on the patient's mouth/ teeth</small>", max: 1 },
+            { text: "<strong>Verbalizes the alternative technique of OPA insertion</strong><br><small class='text-muted'>Using a tongue blade to depress the tongue and inserting the OPA posteriorly</small>", max: 0.5 }
+          ]
+        },
+        {
+          section: "II: NASOPHARYNGEAL AIRWAY (NPA) INSERTION (Max: 3)",
+          items: [
+            { text: "<strong>Verbalizes the indication and contraindications of NPA</strong><br><small class='text-muted'>Indication: Temporary ventilation technique to achieve an open airway in a patient with gag reflexes<br>Contraindication: Suspected or potential cribriform plate fracture</small>", max: 1 },
+            { text: "<strong>Selects, lubricates, and inserts the proper-size airway</strong><br><small class='text-muted'>Selects proper size. Lubricates with lubricant or tap water. Inserts tip into nostril directing posteriorly towards ear. Gently advances into hypopharynx with slight rotating motion until flange rests against nostril.</small>", max: 2 }
+          ]
+        },
+        {
+          section: "III: BAG-MASK VENTILATION (Max: 4)",
+          items: [
+            { text: "<strong>Selects the proper-size mask to fit the patient's face</strong><br><small class='text-muted'>Connects the oxygen tubing to the bag-mask device</small>", max: 1 },
+            { text: "<strong>Applies mask and ensures patent airway</strong><br><small class='text-muted'>Ensures the airway is patent using OPA or NPA. Applies the mask to the patient's face and performs jaw-thrust maneuver. Ensures a tight seal using both hands.</small>", max: 2 },
+            { text: "<strong>Assesses the adequacy of ventilation</strong><br><small class='text-muted'>Observes patient's chest movements. Verbalizes techniques to improve ventilation (i. Insertion of OPA/ NPA, ii. Repositioning of the airway)</small>", max: 1 }
+          ]
+        },
+        {
+          section: "IV: OROTRACHEAL INTUBATION (Max: 10)",
+          items: [
+            { text: "<strong>Takes or verbalizes personal protection equipment</strong><br><small class='text-muted'>(body substance isolation)</small>", max: 1 },
+            { text: "<strong>Verbalizes the preparation for intubation:</strong><br><small class='text-muted'>i. Prepare self, ii. Prepare staffs, iii. Provide list of equipments</small>", max: 1 },
+            { text: "<strong>Checks equipment</strong><br><small class='text-muted'>Checks for Cuff leaks and Laryngoscope operational with bulb tight</small>", max: 1 },
+            { text: "<strong>Performs Endotracheal Intubation</strong><br><small class='text-muted'>Holds laryngoscope in left hand. Inserts into right side of mouth, displacing tongue to the left. Introduces ETT and advances to proper depth. Avoids applying pressure on teeth/oral tissues. Inflates cuff for adequate seal.</small>", max: 4 },
+            { text: "<strong>Checks the placement of the endotracheal tube</strong><br><small class='text-muted'>Provides bag-to-tube ventilation and verifies via: i. Direct visualisation of ETT, ii. Equal chest expansion, iii. Auscultates chest and abdomen, iv. Verbalizes use of CO2 detector</small>", max: 3 }
+          ]
+        }
+      ];
+
+      let html = '';
+      let qIndex = 1;
+      rubric.forEach(sec => {
+        html += `<h5 class="mt-4 mb-3 text-primary border-bottom pb-2 fw-bold">${sec.section}</h5>`;
+        sec.items.forEach(q => {
+          html += `
+            <div class="question-block d-flex justify-content-between align-items-center">
+              <div class="pe-3 w-100">
+                <div class="question-title">${qIndex}. ${q.text}</div>
+              </div>
+              <div style="min-width: 130px;">
+                <div class="input-group">
+                  <input type="number" class="form-control score-val text-center fw-bold" id="item${qIndex}" name="item${qIndex}" min="0" max="${q.max}" step="0.5" required oninput="calculateTotal()" placeholder="0">
+                  <span class="input-group-text">/ ${q.max}</span>
+                </div>
+              </div>
+            </div>
+          `;
+          qIndex++;
+        });
+      });
+      document.write(html);
+    </script>
+
+    <div class="my-4 p-3 total-block rounded text-center">
+      <h3 class="mb-0 text-dark fw-bold">GRAND TOTAL: <span id="grandTotalDisplay" class="text-primary">0</span> / 20</h3>
+    </div>
+
+    <hr class="my-4">
+    
+    <div class="mb-4 question-block" style="border-left-color: #e74c3c;">
+      <label class="question-title fs-5 mb-2">OVERALL PERFORMANCE *</label><br>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="result" id="res_pass" value="PASS" required>
+        <label class="form-check-label text-success fw-bold" for="res_pass">PASS</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="result" id="res_fail" value="NEEDS REMEDIAL">
+        <label class="form-check-label text-danger fw-bold" for="res_fail">NEEDS REMEDIAL</label>
+      </div>
+    </div>
+
+    <div class="mb-3 form-check">
+      <input type="checkbox" class="form-check-input" id="instructorPotential" value="YES">
+      <label class="form-check-label fw-bold text-primary" for="instructorPotential">INSTRUCTOR POTENTIAL</label>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-bold">EXAMINER'S NAME / SIGNATURE :</label>
+      <input type="text" class="form-control" id="instructorName" placeholder="Enter Examiner Name" required>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button type="submit" id="submitBtn" class="btn btn-primary btn-lg fw-bold">Submit Assessment</button>
+    </div>
+
+    <div id="statusAlert" class="alert mt-3" style="display:none;"></div>
+  </form>
+</div>
+
+<script>
+  // Updated with the new Google App Script Backend URL
+  const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
+
+  function submitAssessment() {
+    const submitBtn = document.getElementById('submitBtn');
+    const alertBox = document.getElementById('statusAlert');
+    
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Submitting Data...";
+    alertBox.style.display = "none";
+
+    const payload = {
+      formType: "ALS Airway",
+      studentName: document.getElementById('studentName').value,
+      result: document.querySelector('input[name="result"]:checked').value,
+      instructorPotential: document.getElementById('instructorPotential').checked ? "YES" : "",
+      instructorName: document.getElementById('instructorName').value,
+      totalScore: document.getElementById('grandTotalDisplay').innerText
+    };
+
+    // Dynamically retrieve all question inputs (1 through 14)
+    const itemsCount = document.querySelectorAll('.score-val').length;
+    for (let i = 1; i <= itemsCount; i++) {
+      payload[`item${i}`] = document.getElementById(`item${i}`).value;
+    }
+
+    fetch(API_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('assessmentForm').reset();
+      document.getElementById('grandTotalDisplay').innerText = "0"; // Reset total
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Submit Assessment";
+      alertBox.className = "alert alert-success mt-3";
+      alertBox.innerText = "ALS Airway Assessment saved successfully to Google Sheet!";
+      alertBox.style.display = "block";
+      setTimeout(() => { alertBox.style.display = "none"; }, 5000);
+    })
+    .catch(error => {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Submit Assessment";
+      alertBox.className = "alert alert-danger mt-3";
+      alertBox.innerText = "Submission failed: " + error.message;
+      alertBox.style.display = "block";
+    });
+  }
+</script>
+
+</body>
+</html>
