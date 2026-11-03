@@ -33,18 +33,25 @@
       flex-direction: column;
     }
     
-    /* Navigasi Utama Terapung */
+    /* Floating Navigation (Restored) */
     nav {
-      background: #ffffff;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 12px 20px;
-      border-radius: 12px;
+      position: sticky;
+      top: 15px;
+      z-index: 1000;
       max-width: 850px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 25px auto;
+      width: calc(100% - 20px);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-radius: 50px;
+      padding: 10px 24px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+      border: 1px solid rgba(0, 0, 0, 0.05);
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .logo-group {
       display: flex;
       align-items: center;
@@ -196,7 +203,7 @@
 </head>
 <body>
 
-  <!-- Navigasi Utama Terapung -->
+  <!-- Floating Navigation -->
   <nav>
     <a href="index.html" class="logo-group">
       <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
@@ -223,7 +230,7 @@
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates...</option>
+          <option value="" disabled selected>Loading candidates from Apps Script...</option>
         </select>
       </div>
 
@@ -448,7 +455,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Megacode Assessment saved successfully!";
+        alertBox.innerText = "ALS Megacode Assessment saved successfully to Google Sheet!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
