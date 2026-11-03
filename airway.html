@@ -60,7 +60,7 @@
       transition: all 0.2s ease-in-out;
     }
 
-    /* Container & Elements */
+    /* Form Container */
     .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
     h2 { color: #2c3e50; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
     .question-block { background: #f9fbfd; border-left: 4px solid #3498db; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
@@ -118,35 +118,19 @@
       animation: pulse 1.8s infinite;
     }
     @keyframes pulse {
-      0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-      }
-      70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
-      }
-      100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-      }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
-    .footer-copyright {
-      font-size: 0.85rem;
-      color: #94a3b8;
-      margin: 0;
-    }
-    .footer-copyright span {
-      color: #334155;
-      font-weight: 600;
-    }
+    .footer-copyright { font-size: 0.85rem; color: #94a3b8; margin: 0; }
+    .footer-copyright span { color: #334155; font-weight: 600; }
   </style>
 </head>
 <body>
 
   <!-- Navigasi Utama Terapung -->
   <nav>
-    <a href="#" class="logo-group">
+    <a href="index.html" class="logo-group">
       <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
       <div class="logo-text">
         Hospital Kuala Nerang
@@ -166,40 +150,21 @@
     
     <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
       
+      <!-- Dynamic Participant Dropdown -->
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF RESPONDER :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Select responder name...</option>
-          <option value="ABDUL LATIFF BIN SHARI">ABDUL LATIFF BIN SHARI</option>
-          <option value="AHMAD AZIM AFIFI BIN SHARUPUDDIN">AHMAD AZIM AFIFI BIN SHARUPUDDIN</option>
-          <option value="AKMAL RIDHWAN BIN YUSRIZAL">AKMAL RIDHWAN BIN YUSRIZAL</option>
-          <option value="ARIF AKMAL BIN ABDUL WAHAB">ARIF AKMAL BIN ABDUL WAHAB</option>
-          <option value="BUVANESWARY A/P PUSHPARAJAH">BUVANESWARY A/P PUSHPARAJAH</option>
-          <option value="CHIN HUI ZHI">CHIN HUI ZHI</option>
-          <option value="HARISAH BINTI OMAR">HARISAH BINTI OMAR</option>
-          <option value="MOHAMAD FADZIL BIN ROMLI">MOHAMAD FADZIL BIN ROMLI</option>
-          <option value="MOHAMAD NIZAM BIN MOHAMAD BAKRI">MOHAMAD NIZAM BIN MOHAMAD BAKRI</option>
-          <option value="MOHD FIRDAUS BIN MUSA">MOHD FIRDAUS BIN MUSA</option>
-          <option value="MOHD RAIMI SHAFRY BIN ROSAIDI">MOHD RAIMI SHAFRY BIN ROSAIDI</option>
-          <option value="MOHD SYAFIQ BIN ISMAIL">MOHD SYAFIQ BIN ISMAIL</option>
-          <option value="PERREVITHA A/P KRISHNAN">PERREVITHA A/P KRISHNAN</option>
-          <option value="ROSLINA BINTI MOHAMED OMAR">ROSLINA BINTI MOHAMED OMAR</option>
-          <option value="SITI NOORDIYANA BINTI MOHD ROSDI">SITI NOORDIYANA BINTI MOHD ROSDI</option>
-          <option value="SITI NURJANNAH BINTI HANIZAN">SITI NURJANNAH BINTI HANIZAN</option>
-          <option value="THIBACINI A/P MOHAN">THIBACINI A/P MOHAN</option>
-          <option value="ZAINAB BINTI HASAN">ZAINAB BINTI HASAN</option>
-          <option value="ZAYANI ADLINA BINTI ZALIZAN">ZAYANI ADLINA BINTI ZALIZAN</option>
+          <option value="" disabled selected>Loading participants from Apps Script...</option>
         </select>
       </div>
 
       <script>
         function calculateTotal() {
           let total = 0;
-          document.querySelectorAll('.score-radio:checked').forEach(radio => {
-            if (radio.value === 'DONE') {
-              total += parseFloat(radio.getAttribute('data-points')) || 0;
-            }
+          document.querySelectorAll('.item-radio:checked').forEach(radio => {
+            total += parseFloat(radio.getAttribute('data-score')) || 0;
           });
+          total = Math.round(total * 10) / 10;
           document.getElementById('grandTotalDisplay').innerText = total;
         }
 
@@ -246,19 +211,19 @@
           html += `<h5 class="mt-4 mb-3 text-primary border-bottom pb-2 fw-bold">${sec.section}</h5>`;
           sec.items.forEach(q => {
             html += `
-              <div class="question-block d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2">
-                <div class="pe-md-3">
+              <div class="question-block">
+                <div class="d-flex justify-content-between align-items-start mb-2">
                   <div class="question-title">${qIndex}. ${q.text}</div>
+                  <span class="badge bg-secondary ms-2">${q.max} pt${q.max > 1 ? 's' : ''}</span>
                 </div>
-                <div class="d-flex align-items-center gap-2 ms-auto ms-md-0 pt-2 pt-md-0" style="min-width: 220px; justify-content: flex-end;">
-                  <span class="badge bg-secondary me-1">${q.max} ${q.max === 1 || q.max === 0.5 ? 'pt' : 'pts'}</span>
-                  <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input score-radio" type="radio" name="item${qIndex}" id="item${qIndex}_done" value="DONE" data-points="${q.max}" required onchange="calculateTotal()">
-                    <label class="form-check-label text-success fw-bold" for="item${qIndex}_done">DONE</label>
+                <div class="mt-2 pt-1 border-top">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input item-radio" type="radio" name="item${qIndex}" id="item${qIndex}_done" value="DONE" data-score="${q.max}" required onchange="calculateTotal()">
+                    <label class="form-check-label text-success fw-bold" for="item${qIndex}_done">DONE (${q.max})</label>
                   </div>
-                  <div class="form-check form-check-inline mb-0">
-                    <input class="form-check-input score-radio" type="radio" name="item${qIndex}" id="item${qIndex}_notdone" value="NOT DONE" data-points="0" onchange="calculateTotal()">
-                    <label class="form-check-label text-danger fw-bold" for="item${qIndex}_notdone">NOT DONE</label>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input item-radio" type="radio" name="item${qIndex}" id="item${qIndex}_notdone" value="NOT DONE" data-score="0" onchange="calculateTotal()">
+                    <label class="form-check-label text-danger fw-bold" for="item${qIndex}_notdone">NOT DONE (0)</label>
                   </div>
                 </div>
               </div>
@@ -313,12 +278,10 @@
         <div class="logo-divider"></div>
         <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
       </div>
-
       <div class="footer-status">
         <span class="pulse-dot"></span>
         <span>EDHKN PORTAL Ver 2.0</span>
       </div>
-
       <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
     </div>
   </footer>
@@ -326,6 +289,33 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
 
+    // 1. Fetch participants directly from Google Apps Script on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      const studentSelect = document.getElementById("studentName");
+      
+      // Auto-populate logged-in examiner's name
+      const examinerInput = document.getElementById("instructorName");
+      const savedExaminer = localStorage.getItem("hkn_examiner_name");
+      if (examinerInput && savedExaminer) {
+        examinerInput.value = savedExaminer;
+      }
+
+      fetch(`${API_URL}?action=getParticipants`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success" && data.participants) {
+            studentSelect.innerHTML = `<option value="" disabled selected>Select responder name...</option>`;
+            data.participants.forEach(name => {
+              studentSelect.innerHTML += `<option value="${name}">${name}</option>`;
+            });
+          }
+        })
+        .catch(err => {
+          studentSelect.innerHTML = `<option value="" disabled selected>Failed to load participants.</option>`;
+        });
+    });
+
+    // 2. Submit assessment
     function submitAssessment() {
       const submitBtn = document.getElementById('submitBtn');
       const alertBox = document.getElementById('statusAlert');
@@ -343,10 +333,10 @@
         totalScore: document.getElementById('grandTotalDisplay').innerText
       };
 
-      const totalQuestions = 14;
-      for (let i = 1; i <= totalQuestions; i++) {
-        const checked = document.querySelector(`input[name="item${i}"]:checked`);
-        payload[`item${i}`] = checked ? checked.value : "";
+      const itemsCount = 14;
+      for (let i = 1; i <= itemsCount; i++) {
+        const selected = document.querySelector(`input[name="item${i}"]:checked`);
+        payload[`item${i}`] = selected ? selected.value : "";
       }
 
       fetch(API_URL, {
@@ -360,7 +350,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Airway Assessment saved successfully!";
+        alertBox.innerText = "ALS Airway Assessment saved successfully to Google Sheet!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
