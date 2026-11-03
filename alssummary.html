@@ -4,6 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ALS ADEC - Assessment Summary | Hospital Kuala Nerang</title>
+
+  <!-- STRICT AUTHENTICATION GUARD (Prevents loading before login) -->
+  <style id="authShield">
+    html, body { display: none !important; visibility: hidden !important; }
+  </style>
+  <script>
+    (function() {
+      const authenticatedUser = localStorage.getItem("hkn_examiner");
+      if (!authenticatedUser) {
+        window.stop();
+        window.location.replace("index.html");
+      }
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0;url=index.html">
+  </noscript>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -189,23 +207,91 @@
       display: inline-block;
     }
 
-    /* Footer */
+    /* Single-Line Footer */
     footer {
       margin-top: auto;
       background: #ffffff;
       border-top: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 35px 20px;
+      padding: 14px 20px;
     }
 
-    .footer-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
-    .footer-logos { display: flex; align-items: center; gap: 16px; }
-    .footer-logos img { height: 42px; width: auto; object-fit: contain; }
-    .logo-divider { width: 1px; height: 30px; background-color: #dcdde1; }
-    .footer-status { display: inline-flex; align-items: center; gap: 8px; background: #f8f9fa; border: 1px solid #edf2f7; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #2d3436; }
-    .pulse-dot { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; animation: pulse 1.8s infinite; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7); } 70% { box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); } 100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); } }
-    .footer-copyright { font-size: 0.85rem; color: #95a5a6; margin: 0; }
-    .footer-copyright span { font-weight: 600; color: #2c3e50; }
+    .footer-container {
+      max-width: 950px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: nowrap;
+    }
+
+    .footer-logos {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .footer-logos img {
+      height: 34px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    .logo-divider {
+      width: 1px;
+      height: 22px;
+      background-color: #cbd5e1;
+    }
+
+    .footer-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+      background: #e2e8f0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #22c55e;
+      border-radius: 50%;
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    .footer-copyright {
+      font-size: 0.82rem;
+      color: #94a3b8;
+      margin: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .footer-copyright span {
+      color: #334155;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .footer-container { gap: 8px; }
+      .footer-logos img { height: 26px; }
+      .footer-status, .footer-copyright { font-size: 0.72rem; }
+    }
 
     @media print {
       nav, footer, .controls-row, .btn-print { display: none !important; }
@@ -257,7 +343,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">Total Candidates</div>
-            <div class="h4 fw-bold mb-0">19</div>
+            <div class="h4 fw-bold mb-0" id="metricTotalCount">0</div>
           </div>
         </div>
       </div>
@@ -268,7 +354,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">MCQ Assessed</div>
-            <div class="h4 fw-bold mb-0" id="metricMcqCount">0 / 19</div>
+            <div class="h4 fw-bold mb-0" id="metricMcqCount">0 / 0</div>
           </div>
         </div>
       </div>
@@ -279,7 +365,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">Megacode Assessed</div>
-            <div class="h4 fw-bold mb-0" id="metricMegaCount">0 / 19</div>
+            <div class="h4 fw-bold mb-0" id="metricMegaCount">0 / 0</div>
           </div>
         </div>
       </div>
@@ -326,7 +412,7 @@
           <tbody id="tableBody">
             <tr>
               <td colspan="10" class="text-center py-4 text-muted">
-                <span class="spinner-border spinner-border-sm me-2" role="status"></span> Loading assessment data from Google Sheets...
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span> Loading assessment data from Google Apps Script...
               </td>
             </tr>
           </tbody>
@@ -336,7 +422,7 @@
 
   </main>
 
-  <!-- Footer -->
+  <!-- Footer (Single-Line, Non-Stacking) -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -344,7 +430,12 @@
         <div class="logo-divider"></div>
         <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
       </div>
-      <div class="footer-status"><span class="pulse-dot"></span><span>EDHKN PORTAL Ver 2.0</span></div>
+
+      <div class="footer-status">
+        <span class="pulse-dot"></span>
+        <span>EDHKN PORTAL Ver 2.0</span>
+      </div>
+
       <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
     </div>
   </footer>
@@ -354,16 +445,27 @@
 
     const GRAND_MAX_POINTS = 125; // Airway(20) + Circ(20) + Elec(20) + Mega(25) + MCQ(40)
 
-    const studentList = [
-      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
-      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
-      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
-      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
-      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
-      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
-    ];
+    let dynamicParticipantList = [];
 
-    document.addEventListener("DOMContentLoaded", fetchSummary);
+    document.addEventListener("DOMContentLoaded", () => {
+      const shield = document.getElementById("authShield");
+      if (shield) shield.remove();
+
+      // First, fetch the participants list so we have the dynamic names to check against
+      fetch(`${API_URL}?action=getParticipants`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === "success" && data.participants) {
+            dynamicParticipantList = data.participants;
+            document.getElementById("metricTotalCount").innerText = dynamicParticipantList.length;
+            // Now fetch the actual scores
+            fetchSummary();
+          }
+        })
+        .catch(err => {
+          document.getElementById("tableBody").innerHTML = `<tr><td colspan="10" class="text-center py-4 text-danger"><i class="bi bi-exclamation-circle me-1"></i> Failed to retrieve participant list.</td></tr>`;
+        });
+    });
 
     function fetchSummary() {
       const tbody = document.getElementById("tableBody");
@@ -399,8 +501,9 @@
       let mcqCompleted = 0;
       let megaCompleted = 0;
       let potentialCount = 0;
+      const totalCount = dynamicParticipantList.length;
 
-      studentList.forEach((name, idx) => {
+      dynamicParticipantList.forEach((name, idx) => {
         const row = data[name] || {};
         const airway = row.airway || { score: "-", result: "-" };
         const circ = row.circulation || { score: "-", result: "-" };
@@ -441,8 +544,8 @@
         tbody.appendChild(tr);
       });
 
-      document.getElementById("metricMcqCount").innerText = `${mcqCompleted} / 19`;
-      document.getElementById("metricMegaCount").innerText = `${megaCompleted} / 19`;
+      document.getElementById("metricMcqCount").innerText = `${mcqCompleted} / ${totalCount}`;
+      document.getElementById("metricMegaCount").innerText = `${megaCompleted} / ${totalCount}`;
       document.getElementById("metricPotentialCount").innerText = potentialCount;
     }
 
