@@ -182,7 +182,7 @@
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates from Apps Script...</option>
+          <option value="" disabled selected>Loading candidates...</option>
         </select>
       </div>
 
@@ -407,7 +407,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Megacode Assessment saved successfully to Google Sheet!";
+        alertBox.innerText = "ALS Megacode Assessment saved successfully!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
