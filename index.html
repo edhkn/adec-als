@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ALS ADEC ASSESSMENT - Hospital Kuala Nerang</title>
+  <title>ALS ADEC ASSESSMENT - Portal Hub</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -24,7 +24,6 @@
       flex-direction: column;
     }
 
-    /* Floating Navigation */
     nav {
       position: sticky;
       top: 15px;
@@ -38,6 +37,9 @@
       padding: 10px 24px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       border: 1px solid rgba(0, 0, 0, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .logo-group {
@@ -47,85 +49,27 @@
       text-decoration: none;
       color: #2c3e50;
     }
+    .dept-logo { height: 48px; width: auto; object-fit: contain; }
+    .logo-text { font-size: 1.1rem; font-weight: 700; line-height: 1.2; display: flex; flex-direction: column; }
+    .logo-text span { font-size: 0.8rem; font-weight: 500; color: #7f8c8d; }
+    
+    .btn-logout { display: none; border-radius: 20px; font-weight: 600; font-size: 0.85rem; padding: 5px 16px; }
 
-    .dept-logo {
-      height: 48px;
-      width: auto;
-      object-fit: contain;
-    }
+    .hero-section { text-align: center; padding: 45px 15px 25px; }
+    .hero-title { font-size: 2.2rem; font-weight: 800; color: #2c3e50; letter-spacing: -0.5px; margin-bottom: 8px; }
+    .hero-subtitle { color: #7f8c8d; font-size: 1rem; max-width: 600px; margin: 0 auto; }
 
-    .logo-text {
-      font-size: 1.1rem;
-      font-weight: 700;
-      line-height: 1.2;
-      display: flex;
-      flex-direction: column;
-    }
+    /* Auth Card Styles */
+    #authSection { max-width: 400px; margin: 20px auto 60px; background: #fff; padding: 30px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+    .auth-toggle { color: var(--accent-airway); cursor: pointer; font-weight: 600; text-decoration: underline; }
 
-    .logo-text span {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #7f8c8d;
-    }
+    /* Dashboard Hidden Initially */
+    #dashboardSection { display: none; }
 
-    /* Hero Section */
-    .hero-section {
-      text-align: center;
-      padding: 45px 15px 25px;
-    }
-
-    .hero-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #2c3e50;
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
-    }
-
-    .hero-subtitle {
-      color: #7f8c8d;
-      font-size: 1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Station Cards */
-    .station-grid {
-      max-width: 950px;
-      margin: 0 auto 60px;
-      padding: 0 15px;
-    }
-
-    .station-card {
-      background: #ffffff;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-      padding: 24px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.25s ease-in-out;
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .station-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
-      color: inherit;
-    }
-
-    .card-top-bar {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 6px;
-    }
+    .station-grid { max-width: 950px; margin: 0 auto 60px; padding: 0 15px; }
+    .station-card { background: #ffffff; border-radius: 16px; border: 1px solid rgba(0, 0, 0, 0.06); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04); padding: 24px; height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.25s ease-in-out; position: relative; overflow: hidden; text-decoration: none; color: inherit; }
+    .station-card:hover { transform: translateY(-5px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1); color: inherit; }
+    .card-top-bar { position: absolute; top: 0; left: 0; right: 0; height: 6px; }
 
     .station-card.airway .card-top-bar { background-color: var(--accent-airway); }
     .station-card.circ .card-top-bar { background-color: var(--accent-circ); }
@@ -133,22 +77,8 @@
     .station-card.mega .card-top-bar { background-color: var(--accent-mega); }
     .station-card.mcq .card-top-bar { background-color: var(--accent-mcq); }
 
-    .station-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 14px;
-    }
-
-    .station-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
+    .station-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .station-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
 
     .airway .station-icon { background: #ebf5fb; color: var(--accent-airway); }
     .circ .station-icon { background: #fef5e7; color: var(--accent-circ); }
@@ -156,34 +86,10 @@
     .mega .station-icon { background: #fdedec; color: var(--accent-mega); }
     .mcq .station-icon { background: #e8f8f5; color: var(--accent-mcq); }
 
-    .station-name {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin: 0;
-      color: #2c3e50;
-    }
-
-    .station-desc {
-      font-size: 0.9rem;
-      color: #636e72;
-      margin-bottom: 20px;
-      line-height: 1.45;
-    }
-
-    .station-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid #f1f2f6;
-      padding-top: 14px;
-    }
-
-    .badge-points {
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 5px 10px;
-      border-radius: 20px;
-    }
+    .station-name { font-size: 1.15rem; font-weight: 700; margin: 0; color: #2c3e50; }
+    .station-desc { font-size: 0.9rem; color: #636e72; margin-bottom: 20px; line-height: 1.45; }
+    .station-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f2f6; padding-top: 14px; }
+    .badge-points { font-size: 0.78rem; font-weight: 600; padding: 5px 10px; border-radius: 20px; }
 
     .airway .badge-points { background: #ebf5fb; color: var(--accent-airway); }
     .circ .badge-points { background: #fef5e7; color: var(--accent-circ); }
@@ -191,14 +97,7 @@
     .mega .badge-points { background: #fdedec; color: var(--accent-mega); }
     .mcq .badge-points { background: #e8f8f5; color: var(--accent-mcq); }
 
-    .action-link {
-      font-size: 0.88rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
+    .action-link { font-size: 0.88rem; font-weight: 700; display: flex; align-items: center; gap: 5px; }
     .airway .action-link { color: var(--accent-airway); }
     .circ .action-link { color: var(--accent-circ); }
     .elec .action-link { color: var(--accent-elec); }
@@ -206,91 +105,20 @@
     .mcq .action-link { color: var(--accent-mcq); }
 
     /* Footer */
-    footer {
-      margin-top: auto;
-      background: #ffffff;
-      border-top: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 35px 20px;
-    }
-
-    .footer-container {
-      max-width: 900px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      text-align: center;
-    }
-
-    .footer-logos {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .footer-logos img {
-      height: 42px;
-      width: auto;
-      object-fit: contain;
-    }
-
-    .logo-divider {
-      width: 1px;
-      height: 30px;
-      background-color: #dcdde1;
-    }
-
-    .footer-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #f8f9fa;
-      border: 1px solid #edf2f7;
-      padding: 6px 14px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #2d3436;
-      letter-spacing: 0.3px;
-    }
-
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background-color: #2ecc71;
-      border-radius: 50%;
-      box-shadow: 0 0 0 rgba(46, 204, 113, 0.4);
-      animation: pulse 1.8s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
-      }
-      70% {
-        box-shadow: 0 0 0 8px rgba(46, 204, 113, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0);
-      }
-    }
-
-    .footer-copyright {
-      font-size: 0.85rem;
-      color: #95a5a6;
-      margin: 0;
-    }
-
-    .footer-copyright span {
-      font-weight: 600;
-      color: #2c3e50;
-    }
+    footer { margin-top: auto; background: #ffffff; border-top: 1px solid rgba(0, 0, 0, 0.06); padding: 35px 20px; }
+    .footer-container { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+    .footer-logos { display: flex; align-items: center; gap: 16px; }
+    .footer-logos img { height: 42px; width: auto; object-fit: contain; }
+    .logo-divider { width: 1px; height: 30px; background-color: #dcdde1; }
+    .footer-status { display: inline-flex; align-items: center; gap: 8px; background: #f8f9fa; border: 1px solid #edf2f7; padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: #2d3436; }
+    .pulse-dot { width: 8px; height: 8px; background-color: #2ecc71; border-radius: 50%; animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.7); } 70% { box-shadow: 0 0 0 8px rgba(46,204,113,0); } 100% { box-shadow: 0 0 0 0 rgba(46,204,113,0); } }
+    .footer-copyright { font-size: 0.85rem; color: #95a5a6; margin: 0; }
+    .footer-copyright span { font-weight: 600; color: #2c3e50; }
   </style>
 </head>
 <body>
 
-  <!-- Navigasi Utama Terapung -->
   <nav>
     <a href="#" class="logo-group">
       <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
@@ -299,27 +127,47 @@
         <span>Jabatan Kecemasan & Trauma</span>
       </div>
     </a>
+    <button id="logoutBtn" class="btn btn-outline-danger btn-logout" onclick="logout()">Logout</button>
   </nav>
 
-  <!-- Hero Title -->
   <section class="hero-section">
     <h1 class="hero-title">ALS ADEC ASSESSMENT</h1>
-    <p class="hero-subtitle">Advanced Life Support Skill Assessment Portal. Select an evaluation station or the MCQ answer sheet below.</p>
+    <p class="hero-subtitle">Advanced Life Support Skill Assessment Portal.</p>
   </section>
 
-  <!-- Assessment Grid -->
-  <main class="station-grid">
+  <!-- AUTHENTICATION SECTION -->
+  <section id="authSection">
+    <h3 class="text-center fw-bold mb-4" id="authTitle">Examiner Login</h3>
+    <form id="authForm" onsubmit="event.preventDefault(); handleAuth();">
+      <div class="mb-3">
+        <label class="form-label fw-bold small">Username</label>
+        <input type="text" id="authUsername" class="form-control" required>
+      </div>
+      <div class="mb-4">
+        <label class="form-label fw-bold small">Password</label>
+        <input type="password" id="authPassword" class="form-control" required>
+      </div>
+      <button type="submit" id="authSubmitBtn" class="btn btn-primary w-100 fw-bold" style="background:#2c3e50; border-color:#2c3e50;">Login</button>
+      
+      <div id="authAlert" class="alert mt-3 text-center small fw-bold" style="display:none; padding:8px;"></div>
+      
+      <div class="text-center mt-3 small text-muted">
+        <span id="authSwitchText">Don't have an account?</span> 
+        <span class="auth-toggle" onclick="toggleAuthMode()">Register here</span>
+      </div>
+    </form>
+  </section>
+
+  <!-- DASHBOARD GRID (Hidden until logged in) -->
+  <main class="station-grid" id="dashboardSection">
     <div class="row g-4">
       
-      <!-- MCQ Answer Sheet -->
       <div class="col-12">
         <a href="mcqals.html" class="station-card mcq">
           <div class="card-top-bar"></div>
           <div>
             <div class="station-header">
-              <div class="station-icon">
-                <i class="bi bi-file-earmark-check-fill"></i>
-              </div>
+              <div class="station-icon"><i class="bi bi-file-earmark-check-fill"></i></div>
               <h2 class="station-name">MCQ Answer Sheet</h2>
             </div>
             <p class="station-desc">Written evaluation: Answer sheet for Question 1 to Question 40 (Options A, B, C, D) with automatic scoring and direct Google Sheets submission.</p>
@@ -331,15 +179,12 @@
         </a>
       </div>
 
-      <!-- Megacode Station -->
       <div class="col-md-6">
         <a href="megacode.html" class="station-card mega">
           <div class="card-top-bar"></div>
           <div>
             <div class="station-header">
-              <div class="station-icon">
-                <i class="bi bi-heart-pulse-fill"></i>
-              </div>
+              <div class="station-icon"><i class="bi bi-heart-pulse-fill"></i></div>
               <h2 class="station-name">Megacode Assessment</h2>
             </div>
             <p class="station-desc">Team Leader evaluation for Tachyarrhythmia and Cardiac Arrest (VF) management, including high-quality CPR and reversible causes.</p>
@@ -351,15 +196,12 @@
         </a>
       </div>
 
-      <!-- Airway Station -->
       <div class="col-md-6">
         <a href="airway.html" class="station-card airway">
           <div class="card-top-bar"></div>
           <div>
             <div class="station-header">
-              <div class="station-icon">
-                <i class="bi bi-lungs-fill"></i>
-              </div>
+              <div class="station-icon"><i class="bi bi-lungs-fill"></i></div>
               <h2 class="station-name">Airway Station</h2>
             </div>
             <p class="station-desc">Manual airway opening, OPA/NPA placement, bag-mask ventilation, intubation preparation, and proper endotracheal placement verification.</p>
@@ -371,15 +213,12 @@
         </a>
       </div>
 
-      <!-- Circulation Station -->
       <div class="col-md-6">
         <a href="circulation.html" class="station-card circ">
           <div class="card-top-bar"></div>
           <div>
             <div class="station-header">
-              <div class="station-icon">
-                <i class="bi bi-droplet-fill"></i>
-              </div>
+              <div class="station-icon"><i class="bi bi-droplet-fill"></i></div>
               <h2 class="station-name">Circulation Station</h2>
             </div>
             <p class="station-desc">Pharmacology knowledge covering Adrenaline, Adenosine, Amiodarone, and Atropine indications, correct dosages, and mechanisms of action.</p>
@@ -391,15 +230,12 @@
         </a>
       </div>
 
-      <!-- Electrical Therapy Station -->
       <div class="col-md-6">
         <a href="electricaltherapy.html" class="station-card elec">
           <div class="card-top-bar"></div>
           <div>
             <div class="station-header">
-              <div class="station-icon">
-                <i class="bi bi-lightning-charge-fill"></i>
-              </div>
+              <div class="station-icon"><i class="bi bi-lightning-charge-fill"></i></div>
               <h2 class="station-name">Electrical Therapy Station</h2>
             </div>
             <p class="station-desc">Synchronized cardioversion and transcutaneous pacing procedures, covering appropriate energy level selection and capture verification.</p>
@@ -411,14 +247,11 @@
         </a>
       </div>
 
-      <!-- Master Summary Card -->
       <div class="col-12">
         <a href="alssummary.html" class="station-card" style="border-left: 6px solid #2c3e50;">
           <div>
             <div class="station-header">
-              <div class="station-icon" style="background: #f1f5f9; color: #2c3e50;">
-                <i class="bi bi-clipboard-data-fill"></i>
-              </div>
+              <div class="station-icon" style="background: #f1f5f9; color: #2c3e50;"><i class="bi bi-clipboard-data-fill"></i></div>
               <h2 class="station-name">Master Assessment Summary</h2>
             </div>
             <p class="station-desc">Consolidated real-time marksheet and grading across all 3 skill stations, Megacode, and the MCQ examination for all candidates.</p>
@@ -441,15 +274,99 @@
         <div class="logo-divider"></div>
         <img src="https://lh3.googleusercontent.com/d/1LdMRx-PF49CWOcrjthClGLJg-yQoJ2mt" alt="MOH Logo">
       </div>
-
-      <div class="footer-status">
-        <span class="pulse-dot"></span>
-        <span>EDHKN PORTAL Ver 2.0</span>
-      </div>
-
+      <div class="footer-status"><span class="pulse-dot"></span><span>EDHKN PORTAL Ver 2.0</span></div>
       <p class="footer-copyright">© 2026 <span>Yassin Razak</span> | All Rights Reserved</p>
     </div>
   </footer>
 
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
+    let isRegisterMode = false;
+
+    // Check login status on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      const loggedUser = localStorage.getItem("hkn_examiner");
+      if (loggedUser) {
+        showDashboard(loggedUser);
+      }
+    });
+
+    function toggleAuthMode() {
+      isRegisterMode = !isRegisterMode;
+      document.getElementById('authTitle').innerText = isRegisterMode ? "Register Examiner" : "Examiner Login";
+      document.getElementById('authSubmitBtn').innerText = isRegisterMode ? "Register" : "Login";
+      document.getElementById('authSwitchText').innerText = isRegisterMode ? "Already have an account?" : "Don't have an account?";
+      document.querySelector('.auth-toggle').innerText = isRegisterMode ? "Login here" : "Register here";
+      document.getElementById('authAlert').style.display = "none";
+    }
+
+    function handleAuth() {
+      const u = document.getElementById('authUsername').value;
+      const p = document.getElementById('authPassword').value;
+      const btn = document.getElementById('authSubmitBtn');
+      const alertBox = document.getElementById('authAlert');
+
+      btn.disabled = true;
+      btn.innerText = "Processing...";
+      alertBox.style.display = "none";
+
+      const payload = {
+        action: isRegisterMode ? "register" : "login",
+        username: u,
+        password: p
+      };
+
+      fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.disabled = false;
+        btn.innerText = isRegisterMode ? "Register" : "Login";
+        
+        if (data.status === "success") {
+          if (isRegisterMode) {
+            alertBox.className = "alert alert-success mt-3 text-center small fw-bold";
+            alertBox.innerText = data.message;
+            alertBox.style.display = "block";
+            setTimeout(toggleAuthMode, 2000); // Switch to login
+          } else {
+            localStorage.setItem("hkn_examiner", data.username);
+            showDashboard(data.username);
+          }
+        } else {
+          alertBox.className = "alert alert-danger mt-3 text-center small fw-bold";
+          alertBox.innerText = data.message;
+          alertBox.style.display = "block";
+        }
+      })
+      .catch(err => {
+        btn.disabled = false;
+        btn.innerText = isRegisterMode ? "Register" : "Login";
+        alertBox.className = "alert alert-danger mt-3 text-center small fw-bold";
+        alertBox.innerText = "Connection error.";
+        alertBox.style.display = "block";
+      });
+    }
+
+    function showDashboard(username) {
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('dashboardSection').style.display = 'block';
+      document.getElementById('logoutBtn').style.display = 'inline-block';
+      
+      // Store examiner name globally for child pages if needed
+      localStorage.setItem("hkn_examiner_name", username);
+    }
+
+    function logout() {
+      localStorage.removeItem("hkn_examiner");
+      localStorage.removeItem("hkn_examiner_name");
+      document.getElementById('authSection').style.display = 'block';
+      document.getElementById('dashboardSection').style.display = 'none';
+      document.getElementById('logoutBtn').style.display = 'none';
+      document.getElementById('authForm').reset();
+    }
+  </script>
 </body>
 </html>
