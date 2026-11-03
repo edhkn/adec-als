@@ -25,7 +25,13 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body { background-color: #f4f7f6; padding: 20px 10px; }
+    body { 
+      background-color: #f4f7f6; 
+      padding: 20px 10px; 
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     
     /* Navigasi Utama Terapung */
     nav {
@@ -80,54 +86,71 @@
     }
 
     /* Container & Elements */
-    .form-container { background: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0,0,0,0.1); max-width: 850px; margin: auto; }
+    .form-container { 
+      background: #ffffff; 
+      padding: 30px; 
+      border-radius: 10px; 
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1); 
+      max-width: 850px; 
+      margin: 0 auto 40px auto; 
+    }
     h2 { color: #2c3e50; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
     .question-block { background: #f9fbfd; border-left: 4px solid #3498db; padding: 15px; margin-bottom: 15px; border-radius: 4px; }
     .question-title { font-weight: 500; margin-bottom: 4px; color: #2c3e50; }
     .total-block { background: #eef2f5; border: 2px dashed #7f8c8d; }
 
-    /* Footer */
+    /* Single-Line Footer */
     footer {
-      margin-top: 40px;
-      padding: 20px 0 10px;
-      text-align: center;
-      color: #64748b;
+      margin-top: auto;
+      background: #ffffff;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      padding: 14px 20px;
     }
+
     .footer-container {
-      max-width: 850px;
-      margin: auto;
+      max-width: 950px;
+      margin: 0 auto;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
+      flex-wrap: nowrap;
     }
+
     .footer-logos {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 15px;
+      gap: 12px;
+      flex-shrink: 0;
     }
+
     .footer-logos img {
-      height: 40px;
+      height: 34px;
       width: auto;
       object-fit: contain;
     }
+
     .logo-divider {
       width: 1px;
-      height: 28px;
+      height: 22px;
       background-color: #cbd5e1;
     }
+
     .footer-status {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: #475569;
       background: #e2e8f0;
-      padding: 4px 14px;
+      padding: 4px 12px;
       border-radius: 20px;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
+
     .pulse-dot {
       width: 8px;
       height: 8px;
@@ -136,19 +159,37 @@
       box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
       animation: pulse 1.8s infinite;
     }
+
     @keyframes pulse {
       0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
       70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
       100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
+
     .footer-copyright {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: #94a3b8;
       margin: 0;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
+
     .footer-copyright span {
       color: #334155;
       font-weight: 600;
+    }
+
+    /* Maintain single-line layout on mobile screens */
+    @media (max-width: 768px) {
+      .footer-container {
+        gap: 8px;
+      }
+      .footer-logos img {
+        height: 26px;
+      }
+      .footer-status, .footer-copyright {
+        font-size: 0.72rem;
+      }
     }
   </style>
 </head>
@@ -344,7 +385,7 @@
     </form>
   </div>
 
-  <!-- Footer -->
+  <!-- Footer (Single-Line, Non-Stacking) -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
