@@ -224,11 +224,11 @@
     
     <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
       
-      <!-- Dynamic Candidate Select -->
+      <!-- Dynamic Candidate Select from GitHub -->
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates from Apps Script...</option>
+          <option value="" disabled selected>Loading candidates from GitHub...</option>
         </select>
       </div>
 
@@ -378,20 +378,19 @@
         examinerInput.value = savedExaminer;
       }
 
-      // 3. Fetch candidates dynamically from Google Apps Script
+      // 3. Fetch candidates directly from GitHub name.html
       const studentSelect = document.getElementById("studentName");
-      fetch(`${API_URL}?action=getParticipants`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success" && data.participants) {
-            studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>`;
-            data.participants.forEach(name => {
-              studentSelect.innerHTML += `<option value="${name}">${name}</option>`;
-            });
-          }
+      fetch("name.html")
+        .then(res => {
+          if (!res.ok) throw new Error("Network response was not ok");
+          return res.text();
+        })
+        .then(optionsHtml => {
+          studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>` + optionsHtml;
         })
         .catch(err => {
           studentSelect.innerHTML = `<option value="" disabled selected>Failed to load candidates</option>`;
+          console.error("Error fetching name.html:", err);
         });
     });
 
@@ -429,7 +428,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Airway Assessment saved successfully to Google Sheet!";
+        alertBox.innerText = "ALS Airway Assessment saved successfully!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
