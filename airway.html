@@ -13,7 +13,6 @@
     (function() {
       const authenticatedUser = localStorage.getItem("hkn_examiner");
       if (!authenticatedUser) {
-        // Stop browser from rendering or loading further assets
         window.stop();
         window.location.replace("index.html");
       }
@@ -224,11 +223,11 @@
     
     <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
       
-      <!-- Dynamic Candidate Select from GitHub -->
+      <!-- Dynamic Candidate Select -->
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates from GitHub...</option>
+          <option value="" disabled selected>Loading candidates...</option>
         </select>
       </div>
 
@@ -378,19 +377,52 @@
         examinerInput.value = savedExaminer;
       }
 
-      // 3. Fetch candidates directly from GitHub name.html
-      const studentSelect = document.getElementById("studentName");
-      fetch("name.html")
+      // 3. Intelligent Fetcher with Cache-Buster & DOMParser
+      fetch("name.html?_t=" + Date.now())
         .then(res => {
-          if (!res.ok) throw new Error("Network response was not ok");
+          if (!res.ok) throw new Error("HTTP Status " + res.status);
           return res.text();
         })
-        .then(optionsHtml => {
-          studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>` + optionsHtml;
+        .then(htmlText => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlText, "text/html");
+          
+          let extractedNames = [];
+
+          // Case A: Contains <option> tags
+          const options = doc.querySelectorAll("option");
+          if (options.length > 0) {
+            options.forEach(opt => {
+              const val = opt.value.trim() || opt.textContent.trim();
+              if (val && !val.toLowerCase().includes("select")) {
+                extractedNames.push(val);
+              }
+            });
+          }
+
+          // Case B: Contains <li> tags
+          if (extractedNames.length === 0) {
+            const listItems = doc.querySelectorAll("li");
+            listItems.forEach(li => {
+              const val = li.textContent.trim();
+              if (val) extractedNames.push(val);
+            });
+          }
+
+          // Case C: Plain text lines
+          if (extractedNames.length === 0 && htmlText.trim()) {
+            extractedNames = htmlText.split(/\r?\n/).map(s => s.trim()).filter(s => s && !s.startsWith("<"));
+          }
+
+          if (extractedNames.length > 0) {
+            populateDropdown(extractedNames);
+          } else {
+            populateDropdown(fallbackCandidates);
+          }
         })
         .catch(err => {
-          studentSelect.innerHTML = `<option value="" disabled selected>Failed to load candidates</option>`;
-          console.error("Error fetching name.html:", err);
+          console.warn("Could not load name.html (using built-in candidate list):", err);
+          populateDropdown(fallbackCandidates);
         });
     });
 
@@ -428,7 +460,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Airway Assessment saved successfully!";
+        alertBox.innerText = "ALS Airway Assessment saved successfully to Google Sheet!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
