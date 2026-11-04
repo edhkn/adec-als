@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ALS ADEC AIRWAY STATION : SKILL ASSESSMENT</title>
 
-  <!-- STRICT AUTHENTICATION GUARD (Prevents loading before login) -->
+  <!-- STRICT AUTHENTICATION GUARD -->
   <style id="authShield">
     html, body { display: none !important; visibility: hidden !important; }
   </style>
@@ -185,17 +185,10 @@
       font-weight: 600;
     }
 
-    /* Maintain single-line layout on mobile screens */
     @media (max-width: 768px) {
-      .footer-container {
-        gap: 8px;
-      }
-      .footer-logos img {
-        height: 26px;
-      }
-      .footer-status, .footer-copyright {
-        font-size: 0.72rem;
-      }
+      .footer-container { gap: 8px; }
+      .footer-logos img { height: 26px; }
+      .footer-status, .footer-copyright { font-size: 0.72rem; }
     }
   </style>
 </head>
@@ -223,11 +216,11 @@
     
     <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
       
-      <!-- Dynamic Candidate Select -->
+      <!-- Participant Dropdown Populated In-Script -->
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates...</option>
+          <option value="" disabled selected>Select candidate name...</option>
         </select>
       </div>
 
@@ -343,7 +336,7 @@
     </form>
   </div>
 
-  <!-- Footer (Single-Line, Non-Stacking) -->
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -364,66 +357,34 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
 
-    // Unlock view and populate data only after verified
+    // Direct In-Script Participant List
+    const candidateList = [
+      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
+      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
+      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
+      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
+      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
+      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
+    ];
+
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Remove shield to display page for authenticated examiner
       const shield = document.getElementById("authShield");
       if (shield) shield.remove();
 
-      // 2. Auto-fill examiner name if logged in
       const examinerInput = document.getElementById("instructorName");
       const savedExaminer = localStorage.getItem("hkn_examiner_name");
       if (examinerInput && savedExaminer) {
         examinerInput.value = savedExaminer;
       }
 
-      // 3. Intelligent Fetcher with Cache-Buster & DOMParser
-      fetch("name.html?_t=" + Date.now())
-        .then(res => {
-          if (!res.ok) throw new Error("HTTP Status " + res.status);
-          return res.text();
-        })
-        .then(htmlText => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlText, "text/html");
-          
-          let extractedNames = [];
-
-          // Case A: Contains <option> tags
-          const options = doc.querySelectorAll("option");
-          if (options.length > 0) {
-            options.forEach(opt => {
-              const val = opt.value.trim() || opt.textContent.trim();
-              if (val && !val.toLowerCase().includes("select")) {
-                extractedNames.push(val);
-              }
-            });
-          }
-
-          // Case B: Contains <li> tags
-          if (extractedNames.length === 0) {
-            const listItems = doc.querySelectorAll("li");
-            listItems.forEach(li => {
-              const val = li.textContent.trim();
-              if (val) extractedNames.push(val);
-            });
-          }
-
-          // Case C: Plain text lines
-          if (extractedNames.length === 0 && htmlText.trim()) {
-            extractedNames = htmlText.split(/\r?\n/).map(s => s.trim()).filter(s => s && !s.startsWith("<"));
-          }
-
-          if (extractedNames.length > 0) {
-            populateDropdown(extractedNames);
-          } else {
-            populateDropdown(fallbackCandidates);
-          }
-        })
-        .catch(err => {
-          console.warn("Could not load name.html (using built-in candidate list):", err);
-          populateDropdown(fallbackCandidates);
-        });
+      const studentSelect = document.getElementById("studentName");
+      studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>`;
+      candidateList.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        studentSelect.appendChild(opt);
+      });
     });
 
     function submitAssessment() {
