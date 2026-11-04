@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ALS ADEC - MCQ Answer Sheet</title>
   
-  <!-- STRICT AUTHENTICATION GUARD (Prevents loading before login) -->
+  <!-- STRICT AUTHENTICATION GUARD -->
   <style id="authShield">
     html, body { display: none !important; visibility: hidden !important; }
   </style>
@@ -13,7 +13,6 @@
     (function() {
       const authenticatedUser = localStorage.getItem("hkn_examiner");
       if (!authenticatedUser) {
-        // Stop browser from rendering or loading further assets
         window.stop();
         window.location.replace("index.html");
       }
@@ -435,7 +434,6 @@
       font-weight: 600;
     }
 
-    /* Maintain single-line layout on mobile screens */
     @media (max-width: 768px) {
       .footer-container { gap: 8px; }
       .footer-logos img { height: 26px; }
@@ -449,7 +447,7 @@
 </head>
 <body>
 
-  <!-- Navigasi Utama Terapung -->
+  <!-- Floating Navigation -->
   <nav>
     <a href="index.html" class="logo-group">
       <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
@@ -468,7 +466,6 @@
     
     <form id="mcqForm" onsubmit="event.preventDefault(); submitAssessment();">
       
-      <!-- Top Control & Details Card -->
       <section class="top-control-card">
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
           <div class="header-badge">
@@ -484,13 +481,13 @@
 
         <div class="row g-3 align-items-end">
           
-          <!-- Dynamic Participant Dropdown -->
+          <!-- Participant Dropdown Populated In-Script -->
           <div class="col-lg-7">
             <label class="form-label fw-bold small text-uppercase text-secondary mb-2" for="studentName">
               <i class="bi bi-person-badge me-1"></i> Participant Name
             </label>
             <select class="form-select form-select-lg border-2 shadow-none" id="studentName" required style="font-size: 0.95rem; border-color: #cbd5e1; border-radius: 12px;">
-              <option value="" disabled selected>Loading candidates...</option>
+              <option value="" disabled selected>Select participant name...</option>
             </select>
           </div>
 
@@ -526,7 +523,7 @@
     </form>
   </main>
 
-  <!-- Footer (Single-Line, Non-Stacking) -->
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -543,33 +540,33 @@
   </footer>
 
   <script>
-    // Unified Google Apps Script URL
     const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
 
-    // 1. Reveal page and fetch participants dynamically from Google Apps Script
+    // Direct In-Script Participant List
+    const candidateList = [
+      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
+      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
+      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
+      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
+      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
+      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
+    ];
+
     document.addEventListener("DOMContentLoaded", () => {
-      
       const shield = document.getElementById("authShield");
       if (shield) shield.remove();
 
       const studentSelect = document.getElementById("studentName");
-      
-      fetch(`${API_URL}?action=getParticipants`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success" && data.participants) {
-            studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>`;
-            data.participants.forEach(name => {
-              studentSelect.innerHTML += `<option value="${name}">${name}</option>`;
-            });
-          }
-        })
-        .catch(err => {
-          studentSelect.innerHTML = `<option value="" disabled selected>Failed to load candidates</option>`;
-        });
+      studentSelect.innerHTML = `<option value="" disabled selected>Select participant name...</option>`;
+      candidateList.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        studentSelect.appendChild(opt);
+      });
     });
 
-    // 2. Build the 4-column layout (10 questions each)
+    // Build the 4-column layout (10 questions each)
     const container = document.getElementById("questionsContainer");
     const columnDefinitions = [
       { colNum: 1, start: 1, end: 10 },
@@ -611,7 +608,6 @@
       container.insertAdjacentHTML('beforeend', colHtml);
     });
 
-    // Real-time progress bar updater
     function handleAnswerSelect(questionNum) {
       const row = document.getElementById(`row_q${questionNum}`);
       if (row) row.classList.add("answered");
@@ -632,7 +628,6 @@
       }
     }
 
-    // Submit payload to Apps Script Backend
     function submitAssessment() {
       const submitBtn = document.getElementById('submitBtn');
       const alertBox = document.getElementById('statusAlert');
@@ -659,7 +654,6 @@
       .then(data => {
         document.getElementById('mcqForm').reset();
         
-        // Reset Visual Progress States
         document.querySelectorAll('.q-row').forEach(el => el.classList.remove('answered'));
         document.getElementById("progressFill").style.width = "0%";
         document.getElementById("counterText").innerText = "0 / 40 Completed";
@@ -670,7 +664,6 @@
         submitBtn.innerHTML = `<i class="bi bi-cloud-arrow-up-fill fs-5"></i> Submit Examination`;
 
         alertBox.className = "alert alert-success mt-3 text-center fw-bold";
-        // The script returns the auto-graded score in data.score
         alertBox.innerHTML = `<i class="bi bi-check-circle-fill me-2"></i> Assessment submitted! Score: ${data.score}/40 (${data.percentage}%) - ${data.result}`;
         alertBox.style.display = "block";
         
