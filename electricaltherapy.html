@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ALS ADEC ELECTRICAL THERAPY STATION : SKILL ASSESSMENT</title>
 
-  <!-- STRICT AUTHENTICATION GUARD (Prevents loading before login) -->
+  <!-- STRICT AUTHENTICATION GUARD -->
   <style id="authShield">
     html, body { display: none !important; visibility: hidden !important; }
   </style>
@@ -13,7 +13,6 @@
     (function() {
       const authenticatedUser = localStorage.getItem("hkn_examiner");
       if (!authenticatedUser) {
-        // Abort page load immediately and redirect unauthenticated visitors
         window.stop();
         window.location.replace("index.html");
       }
@@ -186,17 +185,10 @@
       font-weight: 600;
     }
 
-    /* Maintain single-line layout on mobile screens */
     @media (max-width: 768px) {
-      .footer-container {
-        gap: 8px;
-      }
-      .footer-logos img {
-        height: 26px;
-      }
-      .footer-status, .footer-copyright {
-        font-size: 0.72rem;
-      }
+      .footer-container { gap: 8px; }
+      .footer-logos img { height: 26px; }
+      .footer-status, .footer-copyright { font-size: 0.72rem; }
     }
   </style>
 </head>
@@ -224,11 +216,11 @@
     
     <form id="assessmentForm" onsubmit="event.preventDefault(); submitAssessment();">
       
-      <!-- Dynamic Candidate Select -->
+      <!-- Participant Dropdown Populated In-Script -->
       <div class="mb-4">
         <label class="form-label fw-bold">NAME OF CANDIDATE :</label>
         <select class="form-select" id="studentName" required>
-          <option value="" disabled selected>Loading candidates...</option>
+          <option value="" disabled selected>Select candidate name...</option>
         </select>
       </div>
 
@@ -246,83 +238,29 @@
           {
             section: "I: SYNCHRONIZED CARDIOVERSION (Subtotal: 10)",
             items: [
-              { 
-                text: "<strong>Sedates all conscious patients</strong>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Turns on monitor and attaches leads</strong><br><small class='text-muted'>Ensure proper placement of leads. Position pads properly on the patient.</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Engages synchronization mode</strong><br><small class='text-muted'>Presses the sync button. Looks for markers on R wave indicating sync mode.</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Selects the appropriate energy level:</strong><br><small class='text-muted'>• Unstable AF: 120J<br>• Unstable monomorphic VT: 100J<br>• Unstable SVT/ atrial flutter: 50-100J<br>• Polymorphic VT and unstable: Treat as VF with high-energy shock</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Announces clearly to team members:</strong><br><small class='text-muted'>“Charging defibrillator - stand clear”</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Presses the charge button</strong>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Clears the patient when the defibrillator is charged</strong>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Presses the shock button</strong>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Checks the monitor</strong><br><small class='text-muted'>If tachycardia persists, increases the energy level (joules).</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Reactivates the sync button</strong><br><small class='text-muted'>Ensures sync button is reactivated after delivery of each synchronized shock.</small>", 
-                max: 1 
-              }
+              { text: "<strong>Sedates all conscious patients</strong>", max: 1 },
+              { text: "<strong>Turns on monitor and attaches leads</strong><br><small class='text-muted'>Ensure proper placement of leads. Position pads properly on the patient.</small>", max: 1 },
+              { text: "<strong>Engages synchronization mode</strong><br><small class='text-muted'>Presses the sync button. Looks for markers on R wave indicating sync mode.</small>", max: 1 },
+              { text: "<strong>Selects the appropriate energy level:</strong><br><small class='text-muted'>• Unstable AF: 120J<br>• Unstable monomorphic VT: 100J<br>• Unstable SVT/ atrial flutter: 50-100J<br>• Polymorphic VT and unstable: Treat as VF with high-energy shock</small>", max: 1 },
+              { text: "<strong>Announces clearly to team members:</strong><br><small class='text-muted'>“Charging defibrillator - stand clear”</small>", max: 1 },
+              { text: "<strong>Presses the charge button</strong>", max: 1 },
+              { text: "<strong>Clears the patient when the defibrillator is charged</strong>", max: 1 },
+              { text: "<strong>Presses the shock button</strong>", max: 1 },
+              { text: "<strong>Checks the monitor</strong><br><small class='text-muted'>If tachycardia persists, increases the energy level (joules).</small>", max: 1 },
+              { text: "<strong>Reactivates the sync button</strong><br><small class='text-muted'>Ensures sync button is reactivated after delivery of each synchronized shock.</small>", max: 1 }
             ]
           },
           {
             section: "II: TRANSCUTANEOUS PACING (Subtotal: 10)",
             items: [
-              { 
-                text: "<strong>Sedates all conscious patients</strong><br><small class='text-muted'>Unless patient is rapidly deteriorating</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Places pacing electrodes and engages pacer mode</strong><br><small class='text-muted'>Places electrodes on the chest; turns pacer mode on.</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Sets the demand rate</strong><br><small class='text-muted'>Sets demand rate to 60/min (acceptable range 60-80/min).</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Increases current output for electrical capture</strong><br><small class='text-muted'>Increases current output by 10 mA increments until electrical capture is obtained.</small>", 
-                max: 2 
-              },
-              { 
-                text: "<strong>Confirms mechanical capture</strong><br><small class='text-muted'>Palpates femoral pulse to confirm mechanical capture once electrical capture is observed.</small>", 
-                max: 2 
-              },
-              { 
-                text: "<strong>Assesses hemodynamic / clinical status</strong><br><small class='text-muted'>Evaluates patient status once both electrical and mechanical capture are confirmed.</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Sets safety margin</strong><br><small class='text-muted'>Sets the current output 2 mA above the threshold at which consistent capture is observed.</small>", 
-                max: 1 
-              },
-              { 
-                text: "<strong>Post-pacing management</strong><br><small class='text-muted'>Performs a 12-lead ECG and initiates consultation with the cardiology team.</small>", 
-                max: 1 
-              }
+              { text: "<strong>Sedates all conscious patients</strong><br><small class='text-muted'>Unless patient is rapidly deteriorating</small>", max: 1 },
+              { text: "<strong>Places pacing electrodes and engages pacer mode</strong><br><small class='text-muted'>Places electrodes on the chest; turns pacer mode on.</small>", max: 1 },
+              { text: "<strong>Sets the demand rate</strong><br><small class='text-muted'>Sets demand rate to 60/min (acceptable range 60-80/min).</small>", max: 1 },
+              { text: "<strong>Increases current output for electrical capture</strong><br><small class='text-muted'>Increases current output by 10 mA increments until electrical capture is obtained.</small>", max: 2 },
+              { text: "<strong>Confirms mechanical capture</strong><br><small class='text-muted'>Palpates femoral pulse to confirm mechanical capture once electrical capture is observed.</small>", max: 2 },
+              { text: "<strong>Assesses hemodynamic / clinical status</strong><br><small class='text-muted'>Evaluates patient status once both electrical and mechanical capture are confirmed.</small>", max: 1 },
+              { text: "<strong>Sets safety margin</strong><br><small class='text-muted'>Sets the current output 2 mA above the threshold at which consistent capture is observed.</small>", max: 1 },
+              { text: "<strong>Post-pacing management</strong><br><small class='text-muted'>Performs a 12-lead ECG and initiates consultation with the cardiology team.</small>", max: 1 }
             ]
           }
         ];
@@ -392,7 +330,7 @@
     </form>
   </div>
 
-  <!-- Footer (Single-Line, Non-Stacking) -->
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -413,34 +351,34 @@
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
 
-    // Unlock view and populate data only after verified
+    // Direct In-Script Participant List
+    const candidateList = [
+      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
+      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
+      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
+      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
+      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
+      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
+    ];
+
     document.addEventListener("DOMContentLoaded", () => {
-      // 1. Remove shield to display page for authenticated examiner
       const shield = document.getElementById("authShield");
       if (shield) shield.remove();
 
-      // 2. Auto-fill examiner name if logged in
       const examinerInput = document.getElementById("instructorName");
       const savedExaminer = localStorage.getItem("hkn_examiner_name");
       if (examinerInput && savedExaminer) {
         examinerInput.value = savedExaminer;
       }
 
-      // 3. Fetch candidates dynamically from Google Apps Script
       const studentSelect = document.getElementById("studentName");
-      fetch(`${API_URL}?action=getParticipants`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success" && data.participants) {
-            studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>`;
-            data.participants.forEach(name => {
-              studentSelect.innerHTML += `<option value="${name}">${name}</option>`;
-            });
-          }
-        })
-        .catch(err => {
-          studentSelect.innerHTML = `<option value="" disabled selected>Failed to load candidates</option>`;
-        });
+      studentSelect.innerHTML = `<option value="" disabled selected>Select candidate name...</option>`;
+      candidateList.forEach(name => {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        studentSelect.appendChild(opt);
+      });
     });
 
     function submitAssessment() {
@@ -477,7 +415,7 @@
         submitBtn.disabled = false;
         submitBtn.innerText = "Submit Assessment";
         alertBox.className = "alert alert-success mt-3";
-        alertBox.innerText = "ALS Electrical Therapy Assessment saved successfully!";
+        alertBox.innerText = "ALS Electrical Therapy Assessment saved successfully to Google Sheet!";
         alertBox.style.display = "block";
         setTimeout(() => { alertBox.style.display = "none"; }, 5000);
       })
