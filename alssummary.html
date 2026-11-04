@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ALS ADEC - Assessment Summary | Hospital Kuala Nerang</title>
 
-  <!-- STRICT AUTHENTICATION GUARD (Prevents loading before login) -->
+  <!-- STRICT AUTHENTICATION GUARD -->
   <style id="authShield">
     html, body { display: none !important; visibility: hidden !important; }
   </style>
@@ -70,6 +70,10 @@
       gap: 14px;
       text-decoration: none;
       color: #2c3e50;
+    }
+    .logo-group:hover {
+      color: #2c3e50;
+      text-decoration: none;
     }
 
     .dept-logo {
@@ -294,7 +298,7 @@
     }
 
     @media print {
-      nav, footer, .controls-row, .btn-print { display: none !important; }
+      nav, footer, .controls-row, .btn-print, .btn-refresh { display: none !important; }
       body { background: #ffffff; }
       .table-container { box-shadow: none; border: none; padding: 0; }
     }
@@ -302,7 +306,7 @@
 </head>
 <body>
 
-  <!-- Navigasi Utama Terapung -->
+  <!-- Floating Navigation -->
   <nav>
     <a href="index.html" class="logo-group">
       <img src="https://lh3.googleusercontent.com/d/1O2Nj1Dr4U6wo7ISjdkDRukPYwZUkOOuJ" alt="Logo Jabatan" class="dept-logo">
@@ -325,7 +329,7 @@
         <p class="text-muted small mb-0">Full candidate performance summary combining 3 Skill Stations, Megacode, and MCQ Examination (Max 125 Points).</p>
       </div>
       <div class="d-flex gap-2 mt-3 mt-md-0">
-        <button onclick="fetchSummary()" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+        <button onclick="fetchSummary()" class="btn btn-outline-secondary btn-sm rounded-pill px-3 btn-refresh">
           <i class="bi bi-arrow-clockwise me-1"></i> Refresh Data
         </button>
         <button onclick="window.print()" class="btn btn-primary btn-sm rounded-pill px-3 btn-print" style="background: #2c3e50; border-color: #2c3e50;">
@@ -343,7 +347,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">Total Candidates</div>
-            <div class="h4 fw-bold mb-0" id="metricTotalCount">0</div>
+            <div class="h4 fw-bold mb-0" id="metricTotalCount">19</div>
           </div>
         </div>
       </div>
@@ -354,7 +358,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">MCQ Assessed</div>
-            <div class="h4 fw-bold mb-0" id="metricMcqCount">0 / 0</div>
+            <div class="h4 fw-bold mb-0" id="metricMcqCount">0 / 19</div>
           </div>
         </div>
       </div>
@@ -365,7 +369,7 @@
           </div>
           <div>
             <div class="text-muted small fw-semibold">Megacode Assessed</div>
-            <div class="h4 fw-bold mb-0" id="metricMegaCount">0 / 0</div>
+            <div class="h4 fw-bold mb-0" id="metricMegaCount">0 / 19</div>
           </div>
         </div>
       </div>
@@ -412,7 +416,7 @@
           <tbody id="tableBody">
             <tr>
               <td colspan="10" class="text-center py-4 text-muted">
-                <span class="spinner-border spinner-border-sm me-2" role="status"></span> Loading assessment data from Google Apps Script...
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span> Loading assessment data from Google Sheets...
               </td>
             </tr>
           </tbody>
@@ -422,7 +426,7 @@
 
   </main>
 
-  <!-- Footer (Single-Line, Non-Stacking) -->
+  <!-- Footer -->
   <footer>
     <div class="footer-container">
       <div class="footer-logos">
@@ -442,29 +446,24 @@
 
   <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxegwIAVsvVm5-gKYQFFcVY51RsLKxLWgcd3L5t_gvrZHwODKfq0C0ecctWwNzGMGdi/exec";
-
     const GRAND_MAX_POINTS = 125; // Airway(20) + Circ(20) + Elec(20) + Mega(25) + MCQ(40)
 
-    let dynamicParticipantList = [];
+    // Direct In-Script Participant List (Identical across all modules)
+    const candidateList = [
+      "ABDUL LATIFF BIN SHARI", "AHMAD AZIM AFIFI BIN SHARUPUDDIN", "AKMAL RIDHWAN BIN YUSRIZAL",
+      "ARIF AKMAL BIN ABDUL WAHAB", "BUVANESWARY A/P PUSHPARAJAH", "CHIN HUI ZHI",
+      "HARISAH BINTI OMAR", "MOHAMAD FADZIL BIN ROMLI", "MOHAMAD NIZAM BIN MOHAMAD BAKRI",
+      "MOHD FIRDAUS BIN MUSA", "MOHD RAIMI SHAFRY BIN ROSAIDI", "MOHD SYAFIQ BIN ISMAIL",
+      "PERREVITHA A/P KRISHNAN", "ROSLINA BINTI MOHAMED OMAR", "SITI NOORDIYANA BINTI MOHD ROSDI",
+      "SITI NURJANNAH BINTI HANIZAN", "THIBACINI A/P MOHAN", "ZAINAB BINTI HASAN", "ZAYANI ADLINA BINTI ZALIZAN"
+    ];
 
     document.addEventListener("DOMContentLoaded", () => {
       const shield = document.getElementById("authShield");
       if (shield) shield.remove();
 
-      // First, fetch the participants list so we have the dynamic names to check against
-      fetch(`${API_URL}?action=getParticipants`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "success" && data.participants) {
-            dynamicParticipantList = data.participants;
-            document.getElementById("metricTotalCount").innerText = dynamicParticipantList.length;
-            // Now fetch the actual scores
-            fetchSummary();
-          }
-        })
-        .catch(err => {
-          document.getElementById("tableBody").innerHTML = `<tr><td colspan="10" class="text-center py-4 text-danger"><i class="bi bi-exclamation-circle me-1"></i> Failed to retrieve participant list.</td></tr>`;
-        });
+      document.getElementById("metricTotalCount").innerText = candidateList.length;
+      fetchSummary();
     });
 
     function fetchSummary() {
@@ -479,7 +478,6 @@
         });
     }
 
-    // Safely convert raw score to number
     function parseNumericScore(val) {
       if (val === undefined || val === null || val === "-") return 0;
       if (typeof val === 'number') return val;
@@ -501,9 +499,9 @@
       let mcqCompleted = 0;
       let megaCompleted = 0;
       let potentialCount = 0;
-      const totalCount = dynamicParticipantList.length;
+      const totalCount = candidateList.length;
 
-      dynamicParticipantList.forEach((name, idx) => {
+      candidateList.forEach((name, idx) => {
         const row = data[name] || {};
         const airway = row.airway || { score: "-", result: "-" };
         const circ = row.circulation || { score: "-", result: "-" };
@@ -514,7 +512,6 @@
         if (mcq.score !== "-") mcqCompleted++;
         if (mega.score !== "-") megaCompleted++;
 
-        // Calculate Grand Total Points
         const sAirway = parseNumericScore(airway.score);
         const sCirc = parseNumericScore(circ.score);
         const sElec = parseNumericScore(elec.score);
@@ -524,7 +521,6 @@
         const totalPoints = sAirway + sCirc + sElec + sMega + sMcq;
         const percentage = ((totalPoints / GRAND_MAX_POINTS) * 100).toFixed(1);
 
-        // Check if marked potential in any skill station or megacode
         const isPotential = [airway.potential, circ.potential, elec.potential, mega.potential].includes("YES");
         if (isPotential) potentialCount++;
 
